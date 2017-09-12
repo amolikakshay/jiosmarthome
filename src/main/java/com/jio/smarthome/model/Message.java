@@ -20,7 +20,7 @@ public class Message implements Serializable
 {
 
     @JsonProperty("type")
-    private Integer type;
+    private String type;
     @JsonProperty("speech")
     private String speech;
     @JsonIgnore
@@ -28,12 +28,12 @@ public class Message implements Serializable
     private final static long serialVersionUID = 4847178508682797500L;
 
     @JsonProperty("type")
-    public Integer getType() {
+    public String getType() {
         return type;
     }
 
     @JsonProperty("type")
-    public void setType(Integer type) {
+    public void setType(String type) {
         this.type = type;
     }
 
