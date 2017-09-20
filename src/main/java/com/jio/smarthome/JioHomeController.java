@@ -83,6 +83,22 @@ public class JioHomeController {
 		case "light.action":
 			setLightsInput(actionsModel.getResult().getParameters().getStatus());
 			break;
+	
+		case "open.jiocinema":
+		  if(actionsModel.getResult().getParameters().getDeviceName()!=null)
+				{
+			       String deviceName= actionsModel.getResult().getParameters().getDeviceName().toLowerCase();
+			     if(deviceName.contains("shield"))
+			     {
+				  executePost("https://myopenhab.org/rest/items/exec_command_51a54f0a_input","play");
+			     }
+				}
+			  else
+			  {
+				  executePost("https://myopenhab.org/rest/items/JioCinema_Input","play");
+			  }
+			break;
+	
 		case "tv.input":
 			if(actionsModel.getResult().getParameters().getStatus().equalsIgnoreCase("on"))
 			{
@@ -107,9 +123,9 @@ public class JioHomeController {
 				break;
 
 		case "switch.action":
-			  executePost("https://myopenhab.org/rest/items/zwave_device_a16dfb68_node4_switch_binary",actionsModel.getResult().getParameters().getStatus());
+			  executePost("https://myopenhab.org/rest/items/zwave_device_2e25d03d_node8_switch_binary",actionsModel.getResult().getParameters().getStatus());
 				break;
-			
+				
 		case "volume":
 			if(actionsModel.getResult().getParameters().getDeviceName()!=null)
 			{
@@ -129,40 +145,105 @@ public class JioHomeController {
 				break;
 				
 		case "video.play":
+			
+			if(actionsModel.getResult().getParameters().getDeviceName()!=null && actionsModel.getResult().getParameters().getDeviceName().contains("shield"))
+			{
 			  if(!actionsModel.getResult().getParameters().getMovie().isEmpty())
 			  {
 				  executePost("https://myopenhab.org/rest/items/JioCinema_Input","play"+" "+actionsModel.getResult().getParameters().getMovie());
+				  executePost("https://myopenhab.org/rest/items/exec_command_51a54f0a_input","play"+" "+actionsModel.getResult().getParameters().getMovie());
 			  }
 			  else if(!actionsModel.getResult().getParameters().getVideo().isEmpty())
 			  {
-			  executePost("https://myopenhab.org/rest/items/JioCinema_Input","play"+" "+actionsModel.getResult().getParameters().getVideo());
+			      executePost("https://myopenhab.org/rest/items/JioCinema_Input","play"+" "+actionsModel.getResult().getParameters().getVideo());
+			      executePost("https://myopenhab.org/rest/items/exec_command_51a54f0a_input","play"+" "+actionsModel.getResult().getParameters().getVideo());
 			  }
+			}
+			else
+			{
+				if(!actionsModel.getResult().getParameters().getMovie().isEmpty())
+				  {
+					  executePost("https://myopenhab.org/rest/items/JioCinema_Input","play"+" "+actionsModel.getResult().getParameters().getMovie());
+					  executePost("https://myopenhab.org/rest/items/exec_command_51a54f0a_input","play"+" "+actionsModel.getResult().getParameters().getMovie());
+				  }
+				  else if(!actionsModel.getResult().getParameters().getVideo().isEmpty())
+				  {
+				      executePost("https://myopenhab.org/rest/items/JioCinema_Input","play"+" "+actionsModel.getResult().getParameters().getVideo());
+				      executePost("https://myopenhab.org/rest/items/exec_command_51a54f0a_input","play"+" "+actionsModel.getResult().getParameters().getVideo());
+				  }
+			}
+		    executePost("https://myopenhab.org/rest/items/sonos_PLAY1_RINCON_5CAAFD7A40AC01400_control","PAUSE");
 			break;
 			
     	case "video_player_control.pause":
-			
-	          executePost("https://myopenhab.org/rest/items/JioCinema_Input","pause");
+			if(actionsModel.getResult().getParameters().getDeviceName()!=null &&actionsModel.getResult().getParameters().getDeviceName().contains("shield"))
+			{
+	          executePost("https://myopenhab.org/rest/items/exec_command_51a54f0a_input","pause");
+			}
+			else
+			{
+				executePost("https://myopenhab.org/rest/items/JioCinema_Input","pause");
+		    }
 			break;
         case "video_player_control.resume":
 	
-             executePost("https://myopenhab.org/rest/items/JioCinema_Input","resume");
-  	         break;
+        	if(actionsModel.getResult().getParameters().getDeviceName()!=null&&actionsModel.getResult().getParameters().getDeviceName().contains("shield"))
+			{
+            	executePost("https://myopenhab.org/rest/items/exec_command_51a54f0a_input","resume");
+			}
+			else
+			{
+				executePost("https://myopenhab.org/rest/items/JioCinema_Input","resume");
+		    }            
+  	     break;
 	         
         case "video_player_control.skip_forward":
-  	         executePost("https://myopenhab.org/rest/items/JioCinema_Input",actionsModel.getResult().getResolvedQuery());
+  	        
+  	        if(actionsModel.getResult().getParameters().getDeviceName()!=null&&actionsModel.getResult().getParameters().getDeviceName().contains("shield"))
+			{
+  	    	executePost("https://myopenhab.org/rest/items/exec_command_51a54f0a_input",actionsModel.getResult().getResolvedQuery());
+   	        }
+			else 
+			{
+			executePost("https://myopenhab.org/rest/items/JioCinema_Input",actionsModel.getResult().getResolvedQuery());
+			}
+         
 	        break;
 	        
         case "video_player_control.skip_backward":
-	         executePost("https://myopenhab.org/rest/items/JioCinema_Input",actionsModel.getResult().getResolvedQuery());
+        	
+        	if(actionsModel.getResult().getParameters().getDeviceName()!=null&&actionsModel.getResult().getParameters().getDeviceName().contains("shield"))
+			{
+        		executePost("https://myopenhab.org/rest/items/exec_command_51a54f0a_input",actionsModel.getResult().getResolvedQuery());
+            }
+			else 
+			{
+		        executePost("https://myopenhab.org/rest/items/JioCinema_Input",actionsModel.getResult().getResolvedQuery());
+			}
+        	
+        	
   	        break;
   	
-        case "video_player_control.stop":
-  	        executePost("https://myopenhab.org/rest/items/JioCinema_Input","stop");
-	    break;
+        case "video_player_control.stop":        	
+        	if(actionsModel.getResult().getParameters().getDeviceName()!=null&&actionsModel.getResult().getParameters().getDeviceName().contains("shield"))
+			{
+            	executePost("https://myopenhab.org/rest/items/exec_command_51a54f0a_input","stop");
+            }
+			else
+			{
+	  	        executePost("https://myopenhab.org/rest/items/JioCinema_Input","stop");
+			}
 
+	    break;
        case "exit.jiocinema":
-  	        executePost("https://myopenhab.org/rest/items/JioCinema_Input","exit");
-		
+  	     	if(actionsModel.getResult().getParameters().getDeviceName()!=null&&actionsModel.getResult().getParameters().getDeviceName().contains("shield"))
+			{
+     	     executePost("https://myopenhab.org/rest/items/exec_command_51a54f0a_input","exit");
+            }
+			else
+			{
+				executePost("https://myopenhab.org/rest/items/JioCinema_Input","exit");
+			}
        default:
 			break;
     	}		
